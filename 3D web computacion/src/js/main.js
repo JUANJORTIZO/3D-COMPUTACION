@@ -11,6 +11,7 @@ var scene = null,
     control = null,
     cube = null,
     torus = null,
+    light = null,
     torusKnot = null;
    
 
@@ -49,11 +50,57 @@ function StarScene() {
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
+
+crearluz("spotl");
+crearluz( "pointl");
+
 animate();
-//cuboa();
+
 
 
 }
+
+function crearluz(tipoluz){
+
+        switch(tipoluz){
+
+            case "pointl":
+
+            const pointLight = new THREE.PointLight( 0xfEAE9C0, 1, 100 );
+            pointLight.position.set( 0, 5, 0 );
+            scene.add(pointLight );
+            
+            const sphereSize = 1;
+            const pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+            scene.add( pointLightHelper );
+
+            break;
+            
+            case "spotl":
+                light = new THREE.SpotLight( 0xffffff );
+                light.position.set( 10, 10, 10 );
+                scene.add( light );
+
+                const spotLightHelper = new THREE.SpotLightHelper( light );
+                scene.add( spotLightHelper );
+            break;
+
+            case "ambientel":
+                light = new THREE.AmbientLight( 0x404040 ); // soft white light
+                scene.add( light );
+            break;
+
+
+
+        }
+   
+    
+
+
+
+}
+
+
 
 
 function animate() {
@@ -63,8 +110,8 @@ function animate() {
 
     for(let i=0; i< figura.length;i++){
 
-        figura[i].rotation.x +=0.05;
-        figura[i].rotation.z +=0.05;
+        figura[i].rotation.x +=0.02;
+        figura[i].rotation.z +=0.02;
 
     }
    
@@ -92,14 +139,49 @@ function onWindowResize(){
 
         case "cubo" :
 
+            const texture = new THREE.TextureLoader().load('../images/animals/face1.jpg'); 
+
+            var MaterialC = []= [new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face1.jpg')}),
+                                    new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face2.png')}),
+                                    new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face3.jpg')}),
+                                    new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face4.jpg')}),
+                                    new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face5.png')}),
+                                    new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/animals/face6.jpg')})];
+
 
             geometria = new THREE.BoxGeometry(1, 1, 1);
 
+            const materialcubo = new THREE.MeshStandardMaterial ({color: 0xffffff,
+                                                                    roughness: 0.5,
+                                                                    metalness: 0.5,
+                                                                    map:texture,
+                                                                    side: THREE.DoubleSide,
+                                                                    wireframe: false});
+
+            const meshcubo = new THREE.Mesh (geometria, MaterialC);
+
+            scene.add(meshcubo);
+
+            meshcubo.position.x = Math.random() * -(9- 1) + 4.05;
+            meshcubo.position.z = Math.random() * -(9- 1) + 4.05;
+
+            figura.push(meshcubo);
+        
         break;
 
         case "toru" :
 
-            geometria = new THREE.TorusGeometry( 0.5, 0.3, 10, 100 );   
+             geometria = new THREE.TorusGeometry( 0.5, 0.3, 10, 100 );   
+
+            const materialtorus = new THREE.MeshStandardMaterial ({color: 0xEC7ADD, roughness: 0.5, metalness: 0.5 });
+            const meshtoru = new THREE.Mesh (geometria, materialtorus);
+
+            scene.add(meshtoru);
+
+            meshtoru.position.x = Math.random() * -(9- 1) + 4.05;
+            meshtoru.position.z = Math.random() * -(9- 1) + 4.05;
+
+            figura.push(meshtoru);
  
         break;
 
@@ -111,9 +193,11 @@ function onWindowResize(){
 
             }
 
+           
 
-            material= new THREE.MeshBasicMaterial( { color: 0xEC7ADD, wireframe: true } );
 
+           /*  material= new THREE.MeshBasicMaterial( { color: 0xEC7ADD,  transparent:true, opacity: 0.5, wireframe: true } );
+            
             mesh=  new THREE.Mesh( geometria, material );
 
             mesh.position.x = Math.random() * -(9- 1) + 4.05;
@@ -121,7 +205,9 @@ function onWindowResize(){
 
             scene.add(mesh);
             
-            figura.push(mesh);
+            figura.push(mesh); */
+
+            
  }
 
 
