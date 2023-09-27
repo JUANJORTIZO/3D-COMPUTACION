@@ -35,7 +35,7 @@ function StarScene() {
     document.body.appendChild(renderer.domElement);
 
 //ORBITCONTROLS
-    control = new THREE.OrbitControls(camera, renderer.domElement);
+control = new THREE.OrbitControls(camera, renderer.domElement);
     camera.position.set(0,0,0);
     control.update();
     
@@ -187,7 +187,18 @@ function onWindowResize(){
 
         case "knot":
  
-            geometria= new THREE.TorusKnotGeometry( 0.5, 0.5, 100, 12, ); 
+            geometria= new THREE.TorusKnotGeometry( 0.5, 0.5, 100, 12, );  
+
+            const materialtorusk = new THREE.MeshStandardMaterial ({color: 0xEC7ADD, roughness: 0.5, metalness: 0.5 });
+            const meshtoruk = new THREE.Mesh (geometria, materialtorusk);
+
+            scene.add(meshtoruk);
+
+            meshtoruk.position.x = Math.random() * -(9- 1) + 4.05;
+            meshtoruk.position.z = Math.random() * -(9- 1) + 4.05;
+
+            figura.push(meshtoruk);
+ 
            
             break;
 
