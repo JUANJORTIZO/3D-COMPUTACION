@@ -31,27 +31,30 @@ function StarScene() {
 
     //OBJETOS
 
-    camera.position.z = 5;
-    // grid helper
+    camera.position.set(-48.46,16,-0.07);
+   /*  // grid helper
     const gridHelper = new THREE.GridHelper(size, divisions);
-    scene.add(gridHelper);
+    scene.add(gridHelper); */
 
     // axes
-    const axesHelper = new THREE.AxesHelper(5);
+    /* const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
-
+ */
     animate();
 
     crearluz("ambientel");
 
     crearluz("spotl");
 
-    /* loadModel_objMtl("../models/obj_mtl/escenario/","throne.obj", "throne.mtl");
+    loadModel_objMtl("../models/obj_mtl/escenario/","throne.obj", "throne.mtl", 3);
 
-    loadModel_objMtl("../models/obj_mtl/personaje/","knt.obj","knt.mtl"); */
+    loadModel_objMtl("../models/obj_mtl/personaje/","knt.obj","knt.mtl", 2);
 
 
-    loaderGLTF("../models/gltf/", "Duck.gltf");
+    loaderGLTF("../models/gltf/", "../models/gltf/Duck.gltf");
+
+    cofrecosa();
+    stateGame();
 }
 
 function crearluz(tipoluz) {
@@ -64,9 +67,9 @@ function crearluz(tipoluz) {
             pointLight.position.set(0, 5, 0);
             scene.add(pointLight);
 
-            const sphereSize = 1;
+            /* const sphereSize = 1;
             const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-            scene.add(pointLightHelper);
+            scene.add(pointLightHelper); */
 
             break;
 
@@ -76,8 +79,8 @@ function crearluz(tipoluz) {
             light.rotation.y = 50;
             scene.add(light);
 
-            const spotLightHelper = new THREE.SpotLightHelper(light);
-            scene.add(spotLightHelper);
+            /* const spotLightHelper = new THREE.SpotLightHelper(light);
+            scene.add(spotLightHelper); */
             break;
 
         case "ambientel":
@@ -93,6 +96,8 @@ function animate() {
     requestAnimationFrame(animate);
     control.update();
     renderer.render(scene, camera);
+
+   
 }
 
 window.addEventListener('resize', onWindowResize, false);
@@ -107,8 +112,8 @@ function onWindowResize() {
 }
 
 
-/* 
-function loadModel_objMtl(path, nameOBJ, nameMTL) {
+
+function loadModel_objMtl(path, nameOBJ, nameMTL, size) {
     // Load MTL
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setResourcePath(path);
@@ -122,20 +127,21 @@ function loadModel_objMtl(path, nameOBJ, nameMTL) {
         objLoader.setMaterials(materials);
         objLoader.load(nameOBJ, function (object) {
             scene.add(object);
+            object.scale.set(size, size, size);
             // object.scale.set(5,5,5);
         });
     }); 
 
    
-}  */
+} 
 
 function loaderGLTF(path, nameGLTF) {
 
-    alert(path);
+    
     var gltfLoader = new THREE.GLTFLoader();
     var dracoLoader = new THREE.DRACOLoader();
 
-    dracoLoader.setDecoderPath("../models/gltf/");
+    dracoLoader.setDecoderPath(path);
 
     gltfLoader.setDRACOLoader(dracoLoader);
 
@@ -148,5 +154,66 @@ function loaderGLTF(path, nameGLTF) {
         gltf.scenes;
         gltf.cameras;
         gltf.asset;
+
+
+        gltf.scene.position.set(0,0,2);
+        gltf.scene.rotation.set(0,16,0)
     });
 }
+
+
+function cofrecosa(){
+    const min = -30
+    const max = 30;
+    for (var i = 0; i < 5; i++) {
+        var posx = Math.floor(Math.random() * (max - min + 5) + min);
+        var posz = Math.floor(Math.random() * (max - min + 5) + min);
+    
+         
+        var MaterialC = []= [new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/derecha.png')}),
+        new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/caraCofre.png')}),
+        new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/arriba.png')}),
+        new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/arriba.png')}),
+        new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/derecha.png')}),
+        new THREE.MeshBasicMaterial ({map:new THREE.TextureLoader().load('../images/cofre/derecha.png')})];
+    
+    
+       const geometria = new THREE.BoxGeometry(1, 1, 1);
+    
+        /* const materialcubo = new THREE.MeshStandardMaterial ({color: 0xffffff,
+                                        roughness: 0.5,
+                                        metalness: 0.5,
+                                        map:texture,
+                                        side: THREE.DoubleSide,
+                                        wireframe: false});
+     */
+        const meshcubo = new THREE.Mesh (geometria, MaterialC);
+    
+        meshcubo.position.set(posx,1.3,posz)
+        meshcubo.scale.set(2,2,2);
+    
+    scene.add(meshcubo);
+    console.log(i);
+}
+
+}
+
+function stateGame(state) {
+    switch(state) {
+        case 'win':
+            // audio & show img
+            document.getElementById("win").style.display = "block";
+          break;
+        case 'lose':
+            // audio & show img
+            document.getElementById("lose").style.display = "block";
+          break;
+      }
+}
+
+function TemporizadorX(){
+
+const temporizador = getElementById('temporizador')
+
+
+} 
